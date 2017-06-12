@@ -45,11 +45,14 @@ router.post('/', function(req, res, next){
 })
 
 router.delete('/:string', function(req, res, next){
-    Strings.findOne({'string': req.body.string}, function(err, string){
-        Strings.findByIdAndRemove(string._id, function (err, result) {
-          if(err) {res.json({message: 'Error deleting'});}
-          else {res.json({message: 'success'});}
-        })
+    Strings.findOne({'string': req.params.string}, function(err, string){
+        if (!string) {res.json({message: 'string not found'});}
+        else {
+            Strings.findByIdAndRemove(string._id, function (err, result) {
+              if(err) {res.json({message: 'Error deleting'});}
+              else {res.json({message: 'success'});}
+            })
+        }
     })
 })
 
